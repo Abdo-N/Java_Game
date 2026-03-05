@@ -1,9 +1,10 @@
 package game.engine.cells;
 
 public class DoorCell extends Cell{
-	Role role;
-	int energy;
-	boolean activated;
+	private final Role role;
+	private final int energy;
+	private boolean activated;
+	
 	public boolean isActivated() {
 		return activated;
 	}
@@ -16,7 +17,8 @@ public class DoorCell extends Cell{
 	public int getEnergy() {
 		return energy;
 	}
-	DoorCell(String name, Role role, int energy){
+	
+	public DoorCell(String name, Role role, int energy){
 		super(name);
 		this.role=role;
 		this.energy=energy;
