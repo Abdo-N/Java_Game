@@ -1,5 +1,7 @@
 package game.engine.interfaces;
 
-public class CanisterModifier {
-
+public interface CanisterModifier {
+  void modifyEnergy(Monster monster) ;
+	 
+ 
 }
