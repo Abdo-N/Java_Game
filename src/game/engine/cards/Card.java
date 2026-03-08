@@ -1,5 +1,8 @@
 package game.engine.cards;
 
+import game.engine.Role;
+import game.engine.monsters.Monster;
+
 public abstract class Card {
  private String name;
  private String description;

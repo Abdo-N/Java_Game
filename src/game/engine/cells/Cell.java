@@ -1,5 +1,8 @@
 package game.engine.cells;
 
+import game.engine.Role;
+import game.engine.monsters.Monster;
+
 public class Cell {
 	private final String name;
 	private Monster monster;
