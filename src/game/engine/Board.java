@@ -7,10 +7,10 @@ import game.engine.cells.*;
 import game.engine.monsters.*;
 
 public class Board {
-	private static Cell[][] boardCells;
+	private Cell[][] boardCells;
 	private static ArrayList<Monster> stationedMonsters;
 	private static ArrayList<Card> originalCards;
-	private static ArrayList<Card> cards;
+	public static ArrayList<Card> cards;
 	
 	public Board(ArrayList<Card> readCards)
 	{
@@ -36,7 +36,7 @@ public class Board {
 		Board.cards = cards;
 	}
 
-	public static Cell[][] getBoardCells() {
+	public Cell[][] getBoardCells() {
 		return boardCells;
 	}
 
