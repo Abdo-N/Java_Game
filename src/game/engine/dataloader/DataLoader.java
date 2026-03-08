@@ -63,7 +63,7 @@ public class DataLoader {
 		        	if(effect < 0) //therefore contamination sock
 		        	{
 		        		newCell = new ContaminationSock(name,effect);
-		        	} else //therefore conveyor belt
+		        	} else //therefore conveyer belt
 		        	{
 		        		newCell = new ConveyorBelt(name,effect);
 		        	}
