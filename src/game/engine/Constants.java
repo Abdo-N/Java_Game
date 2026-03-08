@@ -25,5 +25,5 @@ public final class Constants {
 	      public static final  int POWERUP_COST = 500;
 	      
 	      //preventing anyone from making a new constant
-	      private Constants() {};
+	      public Constants() {};
 }
