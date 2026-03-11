@@ -4,7 +4,7 @@ import game.engine.Role;
 import game.engine.monsters.Monster;
 
 public class MonsterCell extends Cell{
-	private final Monster cellMonster;
+	private Monster cellMonster;
 	public Monster getCellMonster() {
 		return cellMonster;
 	}

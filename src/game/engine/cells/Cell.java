@@ -4,7 +4,7 @@ import game.engine.Role;
 import game.engine.monsters.Monster;
 
 public class Cell {
-	private final String name;
+	private String name;
 	private Monster monster;
 	
 	public Cell(String name) {

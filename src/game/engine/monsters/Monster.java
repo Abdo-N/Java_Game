@@ -4,10 +4,10 @@ import game.engine.Constants;
 import game.engine.Role;
 
 public abstract class Monster implements Comparable<Monster> {
-	private final String name; //read only
-	private final String description;  //read only
+	private String name; //read only
+	private String description;  //read only
 	private Role role;
-	private final Role originalRole;  //read only 
+	private Role originalRole;  //read only 
 	private int energy;
 	private int position;
 	private boolean frozen;
