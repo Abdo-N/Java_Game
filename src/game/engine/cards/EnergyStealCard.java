@@ -1,7 +1,10 @@
 // Represents energy steal cards. Subclass of Card and can modify energy.
 package game.engine.cards;
 
-public class EnergyStealCard extends Card{
+import game.engine.interfaces.CanisterModifier;
+import game.engine.monsters.Monster;
+
+public class EnergyStealCard extends Card implements CanisterModifier{
 	private int energy;
 	
 	 public EnergyStealCard(String name, String description, int rarity, int energy) {
@@ -12,6 +15,12 @@ public class EnergyStealCard extends Card{
 
 	 public int getEnergy() {
 		 return energy;
+	 }
+
+	 @Override
+	 public void modifyEnergy(Monster monster) {
+		// TODO Auto-generated method stub
+		
 	 }
 
 
