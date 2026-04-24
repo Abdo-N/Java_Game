@@ -9,9 +9,14 @@ public class Dynamo extends Monster {
 	}
 
 	@Override
-	public void executePowerupEffect(Monster opponentMonster) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setEnergy(int energy) {
+        int change = energy - getEnergy();
+        super.setEnergy(getEnergy() + change * 2);
+    }
+
+    @Override
+    public void executePowerupEffect(Monster opponent) {
+        opponent.setFrozen(true);
+    }
 	
 }

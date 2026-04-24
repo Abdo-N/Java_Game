@@ -19,9 +19,23 @@ public class MultiTasker extends Monster {
 	}
 
 	@Override
-	public void executePowerupEffect(Monster opponentMonster) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void move(int distance) {
+        if (normalSpeedTurns > 0) {
+            super.move(distance);
+            normalSpeedTurns--;
+        } else {
+            super.move(distance / 2);
+        }
+    }
+
+    @Override
+    public void setEnergy(int energy) {
+        super.setEnergy(energy + 200);
+    }
+
+    @Override
+    public void executePowerupEffect(Monster opponent) {
+    	normalSpeedTurns = 2;
+    }
 
 }
