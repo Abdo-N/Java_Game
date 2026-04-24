@@ -8,8 +8,11 @@ public class ContaminationSock extends TransportCell implements CanisterModifier
 		super(name,effect); //it says effect must be negative, do I throw an exception?
 	}
 
+
+
 	@Override
-	public void modifyEnergy(Monster monster) {
+	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
+		// TODO Auto-generated method stub
 		
 	}
 }

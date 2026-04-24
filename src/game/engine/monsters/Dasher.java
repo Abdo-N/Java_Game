@@ -4,22 +4,32 @@ import game.engine.Role;
 
 public class Dasher extends Monster {
 	private int momentumTurns;
-	
-	public Dasher(String name, String description, Role role, int energy){
+
+	public Dasher(String name, String description, Role role, int energy) {
 		super(name, description, role, energy);
-		
 		this.momentumTurns = 0;
 	}
-	//getter
 	
-	public int getMomentumTurns(){
+	public int getMomentumTurns() {
 		return momentumTurns;
 	}
-	//setter
 	
-	public void setMomentumTurns(int momentumTurns){
-		if(momentumTurns >= 0)
-			this.momentumTurns = momentumTurns;
+	public void setMomentumTurns(int momentumTurns) {
+		this.momentumTurns = momentumTurns;
 	}
 
+	@Override
+	public void executePowerupEffect(Monster opponentMonster) {
+		momentumTurns = 3;
+		}
+	
+	@Override
+	public void move(int distance){
+		 if (momentumTurns > 0) {
+			 super.move(distance * 3);
+			 momentumTurns--;
+	        } 
+		 else 
+			 super.move(distance * 2);
+	        }
 }
