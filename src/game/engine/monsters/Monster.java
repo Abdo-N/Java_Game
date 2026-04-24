@@ -91,5 +91,31 @@ public abstract class Monster implements Comparable<Monster> {
 	public int compareTo(Monster other) {
 		return this.position - other.position;
 	}
+	
+	public abstract void executePowerupEffect(Monster opponentMonster);
+	
+	public boolean isConfused(){
+		if (confusionTurns==0)
+			return false;
+		return true;
+	}
+	
+	public void move(int distance){
+		position+=distance;
+	}
+	
+	public void alterEnergy(int energy){
+		if(shielded && energy>0)
+			shielded=false;
+		setEnergy(this.energy+energy);
+	}
+	
+	public void decrementConfusion(){
+		if(confusionTurns>0)
+			confusionTurns--;
+		if(confusionTurns==0)
+			role=originalRole;
+	}
+	
 
 }
