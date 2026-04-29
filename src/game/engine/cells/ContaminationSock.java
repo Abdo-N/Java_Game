@@ -14,6 +14,12 @@ public class ContaminationSock extends TransportCell implements CanisterModifier
 		monster.move(-getEffect());
 		monster.alterEnergy(Constants.SLIP_PENALTY);
 	}
+
+	@Override
+	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

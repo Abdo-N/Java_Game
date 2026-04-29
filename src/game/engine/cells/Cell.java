@@ -1,6 +1,5 @@
 package game.engine.cells;
 
-import game.engine.Role;
 import game.engine.monsters.Monster;
 
 

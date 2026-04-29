@@ -6,7 +6,6 @@ import game.engine.monsters.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class Game {
 
@@ -29,7 +28,7 @@ public class Game {
         ArrayList<Monster> stationedMonsters = new ArrayList<>(allMonsters);
         stationedMonsters.remove(player);
         stationedMonsters.remove(opponent);
-        board.setStationedMonsters(stationedMonsters);
+        Board.setStationedMonsters(stationedMonsters);
         board.initializeBoard(DataLoader.readCells());
     }
 
@@ -67,8 +66,7 @@ public class Game {
     }
 
     private int rollDice() {
-        Random rd = new Random();
-        return rd.nextInt(1, 7);
+        return (int) (Math.random() * 6) + 1;
     }
 
     private Monster getCurrentOpponent() {

@@ -1,6 +1,7 @@
 package game.engine.cells;
 
-import game.engine.Role;
+
+import game.engine.cards.Card;
 import game.engine.monsters.Monster;
 import game.engine.Board;
 
@@ -13,7 +14,7 @@ public class CardCell extends Cell {
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
 		super.onLand(landingMonster, opponentMonster);
 		 
-		Card cardDrawn = board.drawCard();
+		Card cardDrawn = Board.drawCard();
 		cardDrawn.performAction(landingMonster, opponentMonster);
 		
 		
