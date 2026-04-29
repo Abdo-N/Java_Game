@@ -1,21 +1,25 @@
 package game.engine.cells;
 
-import game.engine.Board;
-import game.engine.cards.Card;
+import game.engine.Role;
 import game.engine.monsters.Monster;
+import game.engine.Board;
 
 public class CardCell extends Cell {
-	
-	public CardCell(String name) {
-        super(name);
-    }
-	
-	public void onLand(Monster landingMonster, Monster opponentMonster) {
-        super.onLand(landingMonster, opponentMonster);
+	public CardCell(String name){
+		super(name);
+	}
 
-        if (!Board.getCards().isEmpty()) {
-            Card card = Board.getCards().remove(0);
-            card.performAction(landingMonster, opponentMonster);
-        }
-    }
+ 
+	public void onLand(Monster landingMonster, Monster opponentMonster) {
+		super.onLand(landingMonster, opponentMonster);
+		 
+		Card cardDrawn = board.drawCard();
+		cardDrawn.performAction(landingMonster, opponentMonster);
+		
+		
+		
+	}
+
+
+
 }
