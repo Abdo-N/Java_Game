@@ -2,6 +2,7 @@ package game.engine.cells;
 
 import game.engine.Role;
 import game.engine.interfaces.CanisterModifier;
+import game.engine.monsters.Monster;
 
 public class DoorCell extends Cell implements CanisterModifier {
 	private Role role;
@@ -29,6 +30,21 @@ public class DoorCell extends Cell implements CanisterModifier {
 
 	public void setActivated(boolean isActivated) {
 		this.activated = isActivated;
+	}
+	
+	public void onLand(Monster landingMonster, Monster opponentMonster){
+		super.onLand(landingMonster, opponentMonster);
+		
+		if(activated == true)
+			return;
+		boolean appliedEffect = false;
+		if(!landingMonster.isShielded()){
+			if(landingMonster.getRole() == role)
+				landingMonster.setEnergy(landingMonster.getEnergy()+energy);
+			else 
+				landingMonster.setEnergy(landingMonster.getEnergy() - energy);
+		}
+			
 	}
 
 }
