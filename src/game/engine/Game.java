@@ -92,31 +92,6 @@ public class Game {
         switchTurn();
     }
 
-    public void moveMonster(
-        Monster currentMonster,
-        int roll,
-        Monster opponentMonster
-    ) throws InvalidMoveException {
-        int oldPosition = currentMonster.getPosition();
-
-        currentMonster.move(roll);
-
-        Cell landedCell = getCell(currentMonster.getPosition());
-        landedCell.onLand(currentMonster, opponentMonster);
-
-        if (currentMonster.getPosition() == opponentMonster.getPosition()) {
-            currentMonster.setPosition(oldPosition);
-            throw new InvalidMoveException();
-        }
-
-        if (currentMonster.isConfused() && opponentMonster.isConfused()) {
-            currentMonster.decrementConfusion();
-            opponentMonster.decrementConfusion();
-        }
-
-        updateMonsterPositions(currentMonster, opponentMonster);
-    }
-
     public void usePowerup() throws OutOfEnergyException {
         if (current.getEnergy() >= Constants.POWERUP_COST) {
             current.alterEnergy(-Constants.POWERUP_COST);
