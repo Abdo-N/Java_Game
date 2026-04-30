@@ -2,6 +2,7 @@ package game.engine.monsters;
 
 import java.util.ArrayList;
 
+import game.engine.Board;
 import game.engine.Constants;
 import game.engine.Role;
 
@@ -19,14 +20,18 @@ public class Schemer extends Monster {
 
 	@Override
 	public void executePowerupEffect(Monster opponentMonster) {
-		int total = 0;
-		total+=stealEnergyFrom(opponentMonster);
-		ArrayList<Monster> m = new ArrayList<Monster>();
-		for(int i = 0; i<m.size();i++){
-			if(m.get(i)!=opponentMonster && m.get(i).getRole() == opponentMonster.getRole())
-			total+=stealEnergyFrom(m.get(i));
-		}
-		this.setEnergy(this.getEnergy()+total);	
+	    int total = 0;
+	    total += stealEnergyFrom(opponentMonster);
+	    
+	    ArrayList<Monster> stationed = Board.getStationedMonsters();
+	    for (int i = 0; i < stationed.size(); i++) {
+	        if (stationed.get(i) != opponentMonster && 
+	            stationed.get(i).getRole() == opponentMonster.getRole()) {
+	            total += stealEnergyFrom(stationed.get(i));
+	        }
+	    }
+	    
+	    this.setEnergy(this.getEnergy() + total);
 	}
 	@Override
 	public void setEnergy(int energy){

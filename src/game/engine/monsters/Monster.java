@@ -106,11 +106,14 @@ public abstract class Monster implements Comparable<Monster> {
     }
 
     public void move(int distance) {
-        position += distance;
+        position = (position + distance) % Constants.BOARD_SIZE;
     }
 
     public final void alterEnergy(int energy) {
-        if (shielded && energy > 0) shielded = false;
+        if (shielded && energy < 0) {
+            shielded = false;
+            return;
+        }
         setEnergy(this.energy + energy);
     }
 

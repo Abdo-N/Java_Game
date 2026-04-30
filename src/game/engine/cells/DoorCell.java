@@ -32,44 +32,37 @@ public class DoorCell extends Cell implements CanisterModifier{
 	}
 	
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
-       super.onLand(landingMonster, opponentMonster);
-        if (isActivated()== true ) { 
-        	return ; 	
-        }
-        
-        
-        int canisterValue;
-        if (landingMonster.getRole() == role)
-            canisterValue = energy;
-        else
-            canisterValue = -energy;
-        
-        int energyBefore = landingMonster.getEnergy();
-        
-        modifyCanisterEnergy(landingMonster, canisterValue);
-        	 
-             
-        int i = 0;
-        while (i < Board.getStationedMonsters().size()) {
-            if (Board.getStationedMonsters().get(i).getRole() == landingMonster.getRole())
-                modifyCanisterEnergy(Board.getStationedMonsters().get(i), canisterValue);
-            i++;
-        }
+	    super.onLand(landingMonster, opponentMonster);
+	    
+	    if (isActivated()) return;
+	    
+	    int canisterValue;
+	    if (landingMonster.getRole() == role)
+	        canisterValue = energy;
+	    else
+	        canisterValue = -energy;
+	    
+	    int energyBefore = landingMonster.getEnergy();
+	    boolean wasShielded = landingMonster.isShielded();
+	    
+	    modifyCanisterEnergy(landingMonster, canisterValue);
+	    
+	    for (int i = 0; i < Board.getStationedMonsters().size(); i++) {
+	        if (Board.getStationedMonsters().get(i).getRole() == landingMonster.getRole())
+	            modifyCanisterEnergy(Board.getStationedMonsters().get(i), canisterValue);
+	    }
+	    
+	    boolean shieldConsumed = wasShielded && !landingMonster.isShielded();
+	    boolean energyChanged = landingMonster.getEnergy() != energyBefore;
+	    
+	    if (energyChanged || shieldConsumed) {
+	        setActivated(true);
+	    }
+	}
         	   
-   if (landingMonster.getEnergy() != energyBefore) {
-        		  setActivated(true) ;  } }
-        	   
-        	   
-           
-           
-        	
-            	
-	
-	
-       
-	
+  
 	@Override
 	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
-		
+	    monster.alterEnergy(canisterValue);
 	}
 } 

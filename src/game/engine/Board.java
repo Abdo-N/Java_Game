@@ -117,31 +117,20 @@ public class Board {
 
     private void setCardsByRarity() {
         ArrayList<Card> expandedCards = new ArrayList<>();
-
         for (int i = 0; i < originalCards.size(); i++) {
             Card c = originalCards.get(i);
             int rarity = c.getRarity();
-
             for (int j = 0; j < rarity; j++) {
                 expandedCards.add(c);
             }
         }
-
-        cards = expandedCards;
+        originalCards = expandedCards; // update originalCards, not cards
     }
 
     public static void reloadCards() {
-        ArrayList<Card> expandedCards = new ArrayList<>();
-        for (int i = 0; i < originalCards.size(); i++) {
-            Card c = originalCards.get(i);
-            int rarity = c.getRarity();
-
-            for (int j = 0; j < rarity; j++) {
-                expandedCards.add(c);
-            }
-        }
-        java.util.Collections.shuffle(expandedCards);
-        cards = expandedCards;
+        ArrayList<Card> newDeck = new ArrayList<>(originalCards);
+        java.util.Collections.shuffle(newDeck);
+        cards = newDeck;
     }
 
     public static Card drawCard() {
