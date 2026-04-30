@@ -25,10 +25,10 @@ public class Game {
         this.current = player;
 
         // 2.5.2 additions
-        ArrayList<Monster> stationedMonsters = new ArrayList<>(allMonsters);
-        stationedMonsters.remove(player);
-        stationedMonsters.remove(opponent);
-        Board.setStationedMonsters(stationedMonsters);
+        this.current = player;
+        allMonsters.remove(player);
+        allMonsters.remove(opponent);
+        Board.setStationedMonsters(new ArrayList<>(allMonsters));
         board.initializeBoard(DataLoader.readCells());
     }
 

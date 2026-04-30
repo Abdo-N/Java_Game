@@ -73,28 +73,40 @@ public class Board {
     }
 
     public void initializeBoard(ArrayList<Cell> specialCells) {
-        int specialIndex = 0;
-        for (int i = 0; i < Constants.BOARD_ROWS * Constants.BOARD_COLS; i++) {
-            if (specialIndex < specialCells.size() && isSpecialIndex(i)) {
-                setCell(i, specialCells.get(specialIndex));
-                specialIndex++;
-            } else {
-                if (i % 2 == 0) {
-                    setCell(i, new Cell("Rest"));
-                } else {
-                    Role role = (i % 4 == 1) ? Role.SCARER : Role.LAUGHER;
-                    setCell(i, new DoorCell("Door", role, 100));
-                }
-            }
-        }
+    	ArrayList<Cell> doorCells = new ArrayList<>();
+    	ArrayList<Cell> conveyorCells = new ArrayList<>();
+    	ArrayList<Cell> sockCells = new ArrayList<>();
+    	for (Cell c : specialCells) {
+    	    if (c instanceof DoorCell) doorCells.add(c);
+    	    else if (c instanceof ConveyorBelt) conveyorCells.add(c);
+    	    else if (c instanceof ContaminationSock) sockCells.add(c);
+    	}
 
-        for (int i = 0; i < stationedMonsters.size(); i++) {
-            Monster m = stationedMonsters.get(i);
-            int index = m.getPosition();
+    	int doorIndex = 0, conveyorIndex = 0, sockIndex = 0, monsterIndex = 0;
 
-            Cell cell = getCell(index);
-            cell.setMonster(m);
-        }
+    	for (int i = 0; i < Constants.BOARD_ROWS * Constants.BOARD_COLS; i++) {
+    	    if (contains(Constants.MONSTER_CELL_INDICES, i)) {
+    	        if (monsterIndex < stationedMonsters.size()) {
+    	            Monster m = stationedMonsters.get(monsterIndex);
+    	            m.setPosition(i);
+    	            setCell(i, new MonsterCell(m.getName(), m));
+    	            monsterIndex++;
+    	        } else {
+    	            setCell(i, new MonsterCell("Empty", null));
+    	        }
+    	    } else if (contains(Constants.CARD_CELL_INDICES, i)) {
+    	        setCell(i, new CardCell("CardCell"));
+    	    } else if (contains(Constants.CONVEYOR_CELL_INDICES, i)) {
+    	        setCell(i, conveyorCells.get(conveyorIndex++));
+    	    } else if (contains(Constants.SOCK_CELL_INDICES, i)) {
+    	        setCell(i, sockCells.get(sockIndex++));
+    	    } else if (i % 2 == 0) {
+    	        setCell(i, new Cell("Rest"));
+    	    } else {
+    	        if (doorIndex < doorCells.size())
+    	            setCell(i, doorCells.get(doorIndex++));
+    	    }
+    	}
     }
 
     private boolean isSpecialIndex(int index) {
