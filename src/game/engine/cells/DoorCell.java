@@ -31,31 +31,34 @@ public class DoorCell extends Cell implements CanisterModifier{
 		
 	}
 	
+	@Override
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
+
 	    super.onLand(landingMonster, opponentMonster);
-	    if (isActivated()) return;
+
+	    if (isActivated())
+	        return;
 
 	    int energyBefore = landingMonster.getEnergy();
 	    boolean wasShielded = landingMonster.isShielded();
 
-	    if (landingMonster.getRole() == role) {
-	        // Same role — gain energy directly
-	        landingMonster.alterEnergy(energy);
-	        for (int i = 0; i < Board.getStationedMonsters().size(); i++) {
-	            if (Board.getStationedMonsters().get(i).getRole() == landingMonster.getRole())
-	                Board.getStationedMonsters().get(i).alterEnergy(energy);
-	        }
-	    } else {
-	        // Different role — use modifyCanisterEnergy (which negates)
-	        modifyCanisterEnergy(landingMonster, energy);
-	        for (int i = 0; i < Board.getStationedMonsters().size(); i++) {
-	            if (Board.getStationedMonsters().get(i).getRole() == landingMonster.getRole())
-	                modifyCanisterEnergy(Board.getStationedMonsters().get(i), energy);
+	    int value = (landingMonster.getRole() == this.role) ? energy : -energy;
+
+	    if (value < 0 && wasShielded) {
+	        landingMonster.alterEnergy(value);
+	        return;
+	    }
+
+	    modifyCanisterEnergy(landingMonster, energy);
+
+	    for (Monster m : Board.getStationedMonsters()) {
+	        if (m != landingMonster && m.getRole() == landingMonster.getRole()) {
+	            modifyCanisterEnergy(m, energy);
 	        }
 	    }
 
-	    boolean shieldConsumed = wasShielded && !landingMonster.isShielded();
 	    boolean energyChanged = landingMonster.getEnergy() != energyBefore;
+	    boolean shieldConsumed = wasShielded && !landingMonster.isShielded();
 
 	    if (energyChanged || shieldConsumed) {
 	        setActivated(true);
@@ -64,7 +67,8 @@ public class DoorCell extends Cell implements CanisterModifier{
         	   
   
 	@Override
-	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
-	    monster.alterEnergy(-canisterValue); // always damage
+	public void modifyCanisterEnergy(Monster monster, int canisterValue) {	
+		if(!monster.getRole().equals(role)) canisterValue *= -1; 
+		monster.alterEnergy(canisterValue);
 	}
 } 

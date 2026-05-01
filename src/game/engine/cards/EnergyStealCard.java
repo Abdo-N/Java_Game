@@ -1,6 +1,7 @@
 // Represents energy steal cards. Subclass of Card and can modify energy.
 package game.engine.cards;
 
+import game.engine.Constants;
 import game.engine.interfaces.CanisterModifier;
 import game.engine.monsters.Monster;
 
@@ -25,11 +26,16 @@ public class EnergyStealCard extends Card implements CanisterModifier{
 
 	 @Override
 	 public void performAction(Monster player, Monster opponent) {
-	     int energyBefore = opponent.getEnergy();
-	     int stealAmount = Math.min(this.energy, opponent.getEnergy());
-	     modifyCanisterEnergy(opponent, -stealAmount);
-	     int actualStolen = energyBefore - opponent.getEnergy();
-	     player.alterEnergy(actualStolen); // use alterEnergy directly, not modifyCanisterEnergy
+	     int stealAmount = Math.min(this.getEnergy(), opponent.getEnergy());
+	     if(!opponent.isShielded()) {
+	    	 modifyCanisterEnergy(opponent, -stealAmount);
+	    	 modifyCanisterEnergy(player, stealAmount);
+	     }else {
+	    	 opponent.setShielded(false);
+	     }
+	     
+	     
+	    
 	 }
 
 

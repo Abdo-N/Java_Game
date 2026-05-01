@@ -1581,6 +1581,24 @@ public class Milestone2PublicTests {
 		}
 	}
 	
+	/*
+	 * java.lang.AssertionError: The monster's energy should be increased when the monster lands on a door of the same role expected:<140> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at game.tests.Milestone2PublicTests.testDoorCellModifyCanisterEnergyWithMonsterOfSameRoleWithOutShield(Milestone2PublicTests.java:1568)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	 */
+	
 	@Test(timeout = 1000)
 	public void testDoorCellModifyCanisterEnergyWithMonsterOfDifferentRoleWithShield() {
 		

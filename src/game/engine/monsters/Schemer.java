@@ -25,12 +25,9 @@ public class Schemer extends Monster {
 
 	    ArrayList<Monster> stationed = Board.getStationedMonsters();
 	    for (int i = 0; i < stationed.size(); i++) {
-	        if (stationed.get(i) != opponentMonster) {
-	            total += stealEnergyFrom(stationed.get(i));
-	        }
+	        total += stealEnergyFrom(stationed.get(i));
 	    }
-
-	    super.setEnergy(getEnergy() + total);
+	    super.alterEnergy(total);
 	}
 	
 	@Override
