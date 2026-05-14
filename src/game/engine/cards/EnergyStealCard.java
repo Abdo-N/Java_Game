@@ -1,44 +1,40 @@
-// Represents energy steal cards. Subclass of Card and can modify energy.
 package game.engine.cards;
 
-import game.engine.Constants;
 import game.engine.interfaces.CanisterModifier;
 import game.engine.monsters.Monster;
 
-public class EnergyStealCard extends Card implements CanisterModifier{
+public class EnergyStealCard extends Card implements CanisterModifier {
 	private int energy;
+
+	public EnergyStealCard(String name, String description, int rarity, int energy) {
+		super(name, description, rarity, true);
+		this.energy = energy;
+	}
 	
-	 public EnergyStealCard(String name, String description, int rarity, int energy) {
-		 super(name, description, rarity, true);
-		 this.energy = energy;
-		 		 
-	 }
+	public int getEnergy() {
+		return energy;
+	}
 
-	 public int getEnergy() {
-		 return energy;
-	 }
+	@Override
+	public void performAction(Monster player, Monster opponent) {
+		int opponentEnergyBefore = opponent.getEnergy();
+		
+	    int toSteal = Math.min(this.getEnergy(), opponentEnergyBefore);
 
+	    modifyCanisterEnergy(opponent, -toSteal);
 
-	 @Override
-	 public void modifyCanisterEnergy(Monster monster, int canisterValue) {
-		    monster.alterEnergy(canisterValue);
-	 }
+	    if (opponent.getEnergy() == opponentEnergyBefore) {
+	        System.out.println(opponent.getName() + "'s shield blocked the energy steal!");
+	        return;
+	    }
 
-	 @Override
-	 public void performAction(Monster player, Monster opponent) {
-	     int stealAmount = Math.min(this.getEnergy(), opponent.getEnergy());
-	     if(!opponent.isShielded()) {
-	    	 modifyCanisterEnergy(opponent, -stealAmount);
-	    	 modifyCanisterEnergy(player, stealAmount);
-	     }else {
-	    	 opponent.setShielded(false);
-	     }
-	     
-	     
-	    
-	 }
-
-
-
-
+	    modifyCanisterEnergy(player, toSteal);
+	    System.out.println(player.getName() + " stole " + toSteal + " energy from " + opponent.getName() + "!");
+	}
+	
+	@Override
+	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
+		monster.alterEnergy(canisterValue);
+	}
+	
 }

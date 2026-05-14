@@ -2,15 +2,19 @@ package game.engine.cells;
 
 import game.engine.monsters.Monster;
 
-
 public class Cell {
 	private String name;
-	private Monster monster;
+	private Monster monster; 
 	
 	public Cell(String name) {
 		this.name = name;
 		this.monster = null;
 	}
+
+	public String getName() {
+		return name;
+	}
+	
 	public Monster getMonster() {
 		return monster;
 	}
@@ -19,20 +23,11 @@ public class Cell {
 		this.monster = monster;
 	}
 
-	public String getName() {
-		return name;
+	public boolean isOccupied() {
+		return monster != null;
 	}
-	 
-	public boolean isOccupied()  {
-		if( monster != null) return true ;
-		else { return false; }
-		}
-	
 	
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
-		setMonster(landingMonster) ;
-		
-		
-		
+		this.setMonster(landingMonster);
 	}
-	}
+}
