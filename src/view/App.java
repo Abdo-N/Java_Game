@@ -1,10 +1,10 @@
 package view;
 
-import java.io.IOException;
 
 import model.game.engine.Game;
 import model.game.engine.Role;
 import model.game.engine.monsters.Monster;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -110,15 +110,14 @@ public class App extends Application {
         preTurnChoices.promptPreTurnChoices();
     }
 
-    public void showWinner(Monster winner){
-        Stage dialog = new Stage();
-        Label label = new Label(winner.getName() + " wins!\nRole: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
-        VBox box = new VBox(label);
-        box.setStyle("-fx-padding: 20; -fx-alignment: center;");
-        dialog.setScene(new Scene(box, 300, 150));
-        dialog.show();
-      
-        // Create mock monsters for testing (replace with actual game monsters)
+   public void showWinner(Monster winner){
+    Stage dialog = new Stage();
+    Label label = new Label(winner.getName() + " wins!\nRole: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
+    VBox box = new VBox(label);
+    box.setStyle("-fx-padding: 20; -fx-alignment: center;");
+    dialog.setScene(new Scene(box, 300, 150));
+    dialog.show();
+     // Create mock monsters for testing (replace with actual game monsters)
         Monster monster1 = new Dasher("Monster 1", "Test", Role.SCARER, 100);
         Monster monster2 = new Dynamo("Monster 2", "Test", Role.LAUGHER, 100);
 
@@ -138,7 +137,7 @@ public class App extends Application {
 
         primaryStage.setScene(gameScene);
         primaryStage.show();
-    }
+}
 
 
     public static void main(String[] args) {
