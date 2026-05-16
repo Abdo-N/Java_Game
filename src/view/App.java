@@ -13,6 +13,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.DiceDisplay;
+import model.game.engine.Role;
+import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import model.game.engine.monsters.Monster;
+import model.game.engine.monsters.Dasher;
+import model.game.engine.monsters.Dynamo;
+import view.MonsterPanelController;
 
 public class App extends Application {
 	
@@ -24,6 +35,8 @@ public class App extends Application {
 	private PreTurnChoices preTurnChoices;
 	private Game game;
 	private Stage primaryStage;
+    private MonsterPanelController leftPanel;
+    private MonsterPanelController rightPanel;
 	@Override
 	public void start(Stage primaryStage) {
 	    this.primaryStage = primaryStage;
@@ -33,13 +46,29 @@ public class App extends Application {
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
 	}
-	private Parent buildGameLayout() {
-	    BorderPane layout = new BorderPane();
-	    layout.setTop(turnTracker.getTrackerBox());
-	    layout.setBottom(preTurnChoices.getButtonBox());
-	    layout.setRight(diceDisplay.getDiceBox());
-	    return layout;
-	}
+	 private Parent buildGameLayout() {
+    HBox layout = new HBox(10);
+    
+    leftPanel = new MonsterPanelController(game.getPlayer(), "panel_bg1.png");
+    layout.getChildren().add(leftPanel.getPanel());
+    
+    VBox center = new VBox();
+    center.setPrefWidth(700);
+    center.setStyle("-fx-background-color: #333333;");
+    layout.getChildren().add(center);
+    
+    rightPanel = new MonsterPanelController(game.getOpponent(), "panel_bg2.png");
+    layout.getChildren().add(rightPanel.getPanel());
+    
+    //  person 1 needs to do addlistenerRegister panels as event listeners
+    //controller.addListener(leftPanel);
+    //controller.addListener(rightPanel);
+    
+    return layout;
+}
+
+
+	
     public void startGame(Role role) throws IOException {
         game = new Game(role);
         controller = new Controller(game, this);
@@ -88,7 +117,29 @@ public class App extends Application {
         box.setStyle("-fx-padding: 20; -fx-alignment: center;");
         dialog.setScene(new Scene(box, 300, 150));
         dialog.show();
+      
+        // Create mock monsters for testing (replace with actual game monsters)
+        Monster monster1 = new Dasher("Monster 1", "Test", Role.SCARER, 100);
+        Monster monster2 = new Dynamo("Monster 2", "Test", Role.LAUGHER, 100);
+
+        // Create panel controllers
+        MonsterPanelController leftPanel = new MonsterPanelController(monster1, "panel_bg1.png");
+        MonsterPanelController rightPanel = new MonsterPanelController(monster2, "panel_bg2.png");
+
+        // Get the actual UI nodes
+        StackPane leftPanelUI = leftPanel.getPanel();
+        StackPane rightPanelUI = rightPanel.getPanel();
+
+        // Create a layout with both panels
+        HBox gameLayout = new HBox();
+        gameLayout.getChildren().addAll(leftPanelUI, rightPanelUI);
+
+        Scene gameScene = new Scene(gameLayout, 1280, 720);
+
+        primaryStage.setScene(gameScene);
+        primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
