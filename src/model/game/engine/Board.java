@@ -128,7 +128,11 @@ public class Board {
 	public static Card getLastDrawnCard(){
 	    return lastDrawnCard;
 	}
-
+	
+	public static void setLastDrawnCard(Card card){
+	    lastDrawnCard = card;
+	}
+	
 	public void moveMonster(Monster currentMonster, int roll, Monster opponentMonster) throws InvalidMoveException {
 	    Role oldRole = currentMonster.getRole();
 	    int oldPosition = currentMonster.getPosition();

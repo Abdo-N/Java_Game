@@ -43,6 +43,7 @@ public class Controller {
                 Card card = Board.getLastDrawnCard();
                 if(card != null){
                     app.showCardPopup(card.getName(), card.getDescription());
+                    Board.setLastDrawnCard(null);
                 }
             }
 
