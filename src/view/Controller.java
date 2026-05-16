@@ -18,6 +18,8 @@ public class Controller {
     private App app;
     private int turnNumber = 1;
     private ArrayList<GameEventListener> listeners = new ArrayList<>();
+    private boolean previousPlayerShielded = false;
+    private boolean previousOpponentShielded = false;
 
     public Controller(Game game, App app){
         this.game = game;
@@ -37,7 +39,23 @@ public class Controller {
         boolean wasFrozen = currentBefore.isFrozen();
 
         try {
+            // Store shield state before turn
+            boolean playerShieldedBefore = game.getPlayer().isShielded();
+            boolean opponentShieldedBefore = game.getOpponent().isShielded();
+
             game.playTurn();
+
+            // Check if shields blocked damage
+            if (playerShieldedBefore && !game.getPlayer().isShielded()) {
+                for (GameEventListener listener : listeners) {
+                    listener.onShieldBlocked(game.getPlayer());
+                }
+            }
+            if (opponentShieldedBefore && !game.getOpponent().isShielded()) {
+                for (GameEventListener listener : listeners) {
+                    listener.onShieldBlocked(game.getOpponent());
+                }
+            }
 
             if(wasFrozen){
                 app.showFrozen(currentBefore.getName());

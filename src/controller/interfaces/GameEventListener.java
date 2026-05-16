@@ -14,4 +14,5 @@ public interface GameEventListener {
     void onInvalidAction(String reason);
     void onGameWon(Monster winner);
     void onCellEffect(Monster monster, int oldCell, int newCell);
+    void onShieldBlocked(Monster monster);
 }
