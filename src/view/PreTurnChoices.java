@@ -33,8 +33,8 @@ public class PreTurnChoices {
 	        skipButton.setDisable(true);
 	    });
 	    rollButton.setOnAction(e -> {
-	    	controller.handleRollDice();
 	        buttonBox.setVisible(false);
+	        controller.handleRollDice();
 	    });
 	}
 
