@@ -27,7 +27,7 @@ public class App extends Application {
 	public void start(Stage primaryStage) {
 	    this.primaryStage = primaryStage;
 	    primaryStage.setTitle("DoorDash - JavaFX Window");
-	    StartScreen startScreen = new StartScreen();
+	    StartScreen startScreen = new StartScreen(this);
 	    Scene scene = new Scene(startScreen, 800, 600);
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -46,6 +46,8 @@ public class App extends Application {
         // switch to game screen
         Scene gameScene = new Scene(buildGameLayout(), 800, 600);
         primaryStage.setScene(gameScene);
+        turnTracker.updateTracker(1, game.getPlayer().getName(), game.getOpponent().getName());
+        preTurnChoices.promptPreTurnChoices();
     }
     
     public void showDiceResult(int result){

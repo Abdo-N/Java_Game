@@ -1,5 +1,7 @@
 package view;
 
+import java.io.IOException;
+
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -7,7 +9,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
-
 import model.game.engine.Role;
 
 public class StartScreen extends BorderPane {
@@ -19,8 +20,10 @@ public class StartScreen extends BorderPane {
     private VBox selectedCard = null; 
     private Role selectedRole = null;
     private Button startButton;
+    private App app;
 
-    public StartScreen() {
+    public StartScreen(App app) {
+        this.app = app;
         this.setTop(createTopSection());      // title
         this.setCenter(createCenterSection()); // cards
         this.setBottom(createBottomSection()); // button
@@ -100,6 +103,11 @@ public class StartScreen extends BorderPane {
     private void startGame(Role role) {
         // TODO: Create Game instance, switch to GameBoard screen
         System.out.println("Game started with role: " + role);
+        try {
+            app.startGame(role);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private VBox createCard(String imagePath, String roleName, String monsterName, String quote) {
