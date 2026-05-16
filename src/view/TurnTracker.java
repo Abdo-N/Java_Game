@@ -11,9 +11,17 @@ public class TurnTracker {
 	private VBox trackerBox;
 	
 	public TurnTracker() {
-        trackerBox = new VBox();
-        trackerBox.getChildren().addAll(turnLabel, currentLabel, opponentLabel);
-    }
+	    turnLabel = new Label("Turn: 1");
+	    currentLabel = new Label("Current: ");
+	    opponentLabel = new Label("Opponent: ");
+	    
+	    turnLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+	    currentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+	    opponentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+	    
+	    trackerBox = new VBox();
+	    trackerBox.getChildren().addAll(turnLabel, currentLabel, opponentLabel);
+	}
 	
 	public VBox getTrackerBox() {
         return trackerBox;

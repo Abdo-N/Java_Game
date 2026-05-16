@@ -46,26 +46,27 @@ public class App extends Application {
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
 	}
-	 private Parent buildGameLayout() {
-    HBox layout = new HBox(10);
-    
-    leftPanel = new MonsterPanelController(game.getPlayer(), "panel_bg1.png");
-    layout.getChildren().add(leftPanel.getPanel());
-    
-    VBox center = new VBox();
-    center.setPrefWidth(700);
-    center.setStyle("-fx-background-color: #333333;");
-    layout.getChildren().add(center);
-    
-    rightPanel = new MonsterPanelController(game.getOpponent(), "panel_bg2.png");
-    layout.getChildren().add(rightPanel.getPanel());
-    
-    //  person 1 needs to do addlistenerRegister panels as event listeners
-    //controller.addListener(leftPanel);
-    //controller.addListener(rightPanel);
-    
-    return layout;
-}
+	private Parent buildGameLayout() {
+	    HBox layout = new HBox(10);
+	    
+	    leftPanel = new MonsterPanelController(game.getPlayer(), "panel_bg1.png");
+	    layout.getChildren().add(leftPanel.getPanel());
+	    
+	    VBox center = new VBox(10);
+	    center.setPrefWidth(700);
+	    center.setStyle("-fx-background-color: #1a1a2e; -fx-padding: 10;");
+	    center.getChildren().addAll(
+	        turnTracker.getTrackerBox(),
+	        diceDisplay.getDiceBox(),
+	        preTurnChoices.getButtonBox()
+	    );
+	    layout.getChildren().add(center);
+	    
+	    rightPanel = new MonsterPanelController(game.getOpponent(), "panel_bg2.png");
+	    layout.getChildren().add(rightPanel.getPanel());
+	    
+	    return layout;
+	}
 
 
 	
@@ -103,7 +104,12 @@ public class App extends Application {
 
     public void onTurnEnd(int turnNumber, String currentPlayer, String opponent){
         turnTracker.updateTracker(turnNumber, currentPlayer, opponent);
-        // call board and monster panel updates here
+        leftPanel.onStatusEffectChanged(game.getPlayer());
+        leftPanel.onMonsterMoved(game.getPlayer(), game.getPlayer().getPosition());
+        rightPanel.onStatusEffectChanged(game.getOpponent());
+        rightPanel.onMonsterMoved(game.getOpponent(), game.getOpponent().getPosition());
+        leftPanel.onEnergyChanged(game.getPlayer(), 0);
+        rightPanel.onEnergyChanged(game.getOpponent(), 0);
     }
 
     public void promptNextTurn(){
