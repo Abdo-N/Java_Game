@@ -63,6 +63,7 @@ public class Controller {
 
         } catch (InvalidMoveException e) {
             app.showMessage(e.getMessage());
+            app.promptNextTurn();
         }
     }
 }
