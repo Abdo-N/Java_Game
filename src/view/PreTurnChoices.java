@@ -11,7 +11,7 @@ public class PreTurnChoices {
 	private Button skipButton;
 	private Controller controller;
 	
-	public PreTurnChoices(view.Controller controller){
+	public PreTurnChoices(Controller controller){
 		this.controller=controller;
 	    rollButton = new Button("Roll Dice");
 	    powerupButton = new Button("Activate Powerup");

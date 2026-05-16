@@ -2,7 +2,6 @@ package view;
 
 import java.io.IOException;
 
-import controller.interfaces.GameController;
 import model.game.engine.Game;
 import model.game.engine.Role;
 import model.game.engine.monsters.Monster;
