@@ -201,11 +201,11 @@ private VBox createStatsSection() {
     energyLabelText.setTextFill(Color.LIGHTGRAY);
     
     energyLabel = new Label(String.valueOf(monster.getEnergy()));
-    energyLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 14));
+    energyLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 14));
     energyLabel.setTextFill(Color.web("#00FF00"));
     
     energyChange = new Label("");
-    energyChange.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 12));
+    energyChange.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 12));
     energyChange.setTextFill(Color.web("#00FF00"));
     
     energyRow.getChildren().addAll(energyLabelText, energyLabel, energyChange);
@@ -221,13 +221,31 @@ private VBox createStatsSection() {
     positionLabelText.setTextFill(Color.LIGHTGRAY);
     
     positionLabel = new Label("Cell " + monster.getPosition());
-    positionLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 14));
-    positionLabel.setTextFill(Color.web("#00FF00"));
+    positionLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 14));
+    positionLabel.setTextFill(Color.web("#00DDFF")); // Cyan instead of green
     
     positionRow.getChildren().addAll(positionLabelText, positionLabel);
     
     statsBox.getChildren().addAll(energyRow, positionRow);
     return statsBox;
+}
+
+
+public void onShieldBlocked(Monster monster) {
+    if (!this.monster.equals(monster)) return;
+    
+    Label blockedLabel = new Label("BLOCKED!");
+    blockedLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 12));
+    blockedLabel.setTextFill(Color.web("#FFD700")); // Gold
+    
+    statusEffectsContainer.getChildren().add(blockedLabel);
+    
+    // Fade out after 2 seconds
+    FadeTransition fade = new FadeTransition(Duration.millis(2000), blockedLabel);
+    fade.setFromValue(1.0);
+    fade.setToValue(0.0);
+    fade.setOnFinished(e -> statusEffectsContainer.getChildren().remove(blockedLabel));
+    fade.play();
 }
 
 
@@ -251,20 +269,51 @@ private VBox createStatsSection() {
     }
 
     @Override
-    public void onStatusEffectChanged(Monster monster){
-        if(!this.monster.equals(monster)) return;
-         
-        statusEffectsContainer.getChildren().clear();
-
+public void onStatusEffectChanged(Monster monster) {
+    if (!this.monster.equals(monster)) return;
+    
+    // Update role display if confused
+    if (monster.isConfused()) {
+        roleLabel.setStyle("-fx-text-fill: #FF6600; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, #FF6600, 10, 0.5, 0, 0);");
+        roleLabel.setText("Role: " + monster.getRole() + " (CONFUSED!)");
+    } else {
+        roleLabel.setStyle("-fx-text-fill: #FFFFFF;");
+        roleLabel.setText("Role: " + monster.getRole());
+    }
+    
+    // Fade out old effects
+    FadeTransition fadeOut = new FadeTransition(Duration.millis(200), statusEffectsContainer);
+    fadeOut.setFromValue(1.0);
+    fadeOut.setToValue(0.3);
+    fadeOut.play();
+    
+    // Update effects after fade
+    fadeOut.setOnFinished(event -> {
         updateStatusEffects();
-
-    }
-
-      public void onMonsterMoved(Monster monster, int newCell) {
-        if (!this.monster.equals(monster)) return;
         
-        positionLabel.setText("Cell " + newCell);
+        // Fade back in
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(200), statusEffectsContainer);
+        fadeIn.setFromValue(0.3);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
+    });
+}
+
+   @Override
+public void onMonsterMoved(Monster monster, int newCell) {
+    if (!this.monster.equals(monster)) return;
+    
+    positionLabel.setText("Cell " + newCell);
+    
+    // Change color based on direction
+    if (newCell > monster.getPosition()) {
+        positionLabel.setTextFill(Color.web("#06454f")); // Cyan - forward
+    } else {
+        positionLabel.setTextFill(Color.web("#03d2fb")); // Orange - backward
     }
+    
+    monster.setPosition(newCell);
+}
 
 
  @Override
