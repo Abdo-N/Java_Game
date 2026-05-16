@@ -14,7 +14,10 @@ public class App extends Application {
         Scene scene = new Scene(startScreen, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
+        TurnTracker turnTracker = new TurnTracker();
     }
+    
+    
 
     public static void main(String[] args) {
         launch(args);
