@@ -68,8 +68,7 @@ public class App extends Application {
 
     public void onTurnEnd(int turnNumber, String currentPlayer, String opponent){
         turnTracker.updateTracker(turnNumber, currentPlayer, opponent);
-        // here you'll also call your board and monster panel updates
-        // coordinate with your teammates for those
+        // call board and monster panel updates here
     }
 
     public void promptNextTurn(){
