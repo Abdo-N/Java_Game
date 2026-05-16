@@ -26,7 +26,8 @@ import model.game.engine.monsters.Dynamo;
 import view.MonsterPanelController;
 
 public class App extends Application {
-	
+	private int previousPlayerEnergy = 0;
+    private int previousOpponentEnergy = 0;
 	private DiceDisplay diceDisplay = new DiceDisplay();
 	private CardPopup cardPopup = new CardPopup();
 	private FreezeNotifier freezeNotifier = new FreezeNotifier();
@@ -103,13 +104,17 @@ public class App extends Application {
     }
 
     public void onTurnEnd(int turnNumber, String currentPlayer, String opponent){
+        int playerDelta = game.getPlayer().getEnergy() - previousPlayerEnergy;
+        int opponentDelta = game.getOpponent().getEnergy() - previousOpponentEnergy;
         turnTracker.updateTracker(turnNumber, currentPlayer, opponent);
         leftPanel.onStatusEffectChanged(game.getPlayer());
         leftPanel.onMonsterMoved(game.getPlayer(), game.getPlayer().getPosition());
         rightPanel.onStatusEffectChanged(game.getOpponent());
         rightPanel.onMonsterMoved(game.getOpponent(), game.getOpponent().getPosition());
-        leftPanel.onEnergyChanged(game.getPlayer(), 0);
-        rightPanel.onEnergyChanged(game.getOpponent(), 0);
+        leftPanel.onEnergyChanged(game.getPlayer(), playerDelta);
+        rightPanel.onEnergyChanged(game.getOpponent(), opponentDelta);
+        previousPlayerEnergy = game.getPlayer().getEnergy();
+        previousOpponentEnergy = game.getOpponent().getEnergy();
     }
 
     public void promptNextTurn(){

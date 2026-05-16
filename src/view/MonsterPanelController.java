@@ -13,7 +13,9 @@ import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -122,7 +124,7 @@ private void createFallback() {
         VBox effectsBox = new VBox(8);
         
         Label effectsTitle = new Label("ACTIVE EFFECTS");
-        effectsTitle.setFont(Font.font("Arial", FontWeight.BOLD, 11));
+        effectsTitle.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 11));
         effectsTitle.setTextFill(Color.GRAY);
         
         statusEffectsContainer = new HBox(8);
@@ -136,27 +138,53 @@ private void createFallback() {
         
         return effectsBox;
     }
-
-    private VBox createHeaderSection() {
-        VBox header = new VBox(5);
-        header.setStyle("-fx-background-color: rgba(0, 51, 170, 0.8); -fx-padding: 10; -fx-border-radius: 5;");
-
-        monsterName = new Label(monster.getName());
-        monsterName.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        monsterName.setTextFill(Color.WHITE);
-
-        monsterType = new Label(monster.getRole() + " • " + monster.getRole());
-        monsterType.setFont(Font.font("Arial", 12));
-        monsterType.setTextFill(Color.LIGHTGRAY);
-        
-        // Current role (with confusion indicator)
-        roleLabel = new Label("Role: " + monster.getRole());
-        roleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        roleLabel.setTextFill(Color.WHITE);
-        
-        header.getChildren().addAll(monsterName, monsterType, roleLabel);
-        return header; 
-    }  
+private VBox createHeaderSection() {
+    VBox header = new VBox(5);
+    header.setPrefHeight(120);
+    header.setPadding(new Insets(10));
+    
+    try {
+        File headerFile = new File("assets/fonts/images/panels/fram23.png");
+        if (headerFile.exists()) {
+            Image headerImg = new Image(headerFile.toURI().toString());
+            ImageView headerBg = new ImageView(headerImg);
+            headerBg.setFitWidth(260);
+            headerBg.setFitHeight(120);
+            headerBg.setPreserveRatio(false);
+            
+            VBox textOverlay = new VBox(2);
+            textOverlay.setPadding(new Insets(15, 10, 10, 10));
+            textOverlay.setAlignment(Pos.CENTER);
+            textOverlay.setStyle("-fx-background-color: transparent;");
+            
+            monsterName = new Label(monster.getName());
+            monsterName.setFont(Font.font("assets/fonts/PressStart2P.ttf", 24));
+            monsterName.setTextFill(Color.WHITE);
+            monsterName.setAlignment(Pos.CENTER);
+            
+            monsterType = new Label(monster.getClass().getSimpleName() + " • " + monster.getRole());
+            monsterType.setFont(Font.font("assets/fonts/PressStart2P.ttf", 14));
+            monsterType.setTextFill(Color.LIGHTGRAY);
+            monsterType.setAlignment(Pos.CENTER);
+            
+            roleLabel = new Label("Role: " + monster.getRole());
+            roleLabel.setFont(Font.font("assets/fonts/PressStart2P.ttf", 14));
+            roleLabel.setTextFill(Color.WHITE);
+            roleLabel.setAlignment(Pos.CENTER);
+            
+            textOverlay.getChildren().addAll(monsterName, monsterType, roleLabel);
+            
+            StackPane headerStack = new StackPane();
+            headerStack.getChildren().addAll(headerBg, textOverlay);
+            StackPane.setAlignment(textOverlay, Pos.CENTER);
+            header.getChildren().add(headerStack);
+        }
+    } catch (Exception e) {
+        System.err.println("Error loading header: " + e.getMessage());
+    }
+    
+    return header;
+}
 
   // Create stats section (energy and position)
 private VBox createStatsSection() {
@@ -169,15 +197,15 @@ private VBox createStatsSection() {
     energyRow.setStyle("-fx-background-color: rgba(80, 80, 80, 0.8); -fx-border-radius: 5;");
     
     Label energyLabelText = new Label("Energy: ");
-    energyLabelText.setFont(Font.font("Arial", 12));
+    energyLabelText.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 12));
     energyLabelText.setTextFill(Color.LIGHTGRAY);
     
     energyLabel = new Label(String.valueOf(monster.getEnergy()));
-    energyLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+    energyLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 14));
     energyLabel.setTextFill(Color.web("#00FF00"));
     
     energyChange = new Label("");
-    energyChange.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    energyChange.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 12));
     energyChange.setTextFill(Color.web("#00FF00"));
     
     energyRow.getChildren().addAll(energyLabelText, energyLabel, energyChange);
@@ -189,11 +217,11 @@ private VBox createStatsSection() {
     positionRow.setStyle("-fx-background-color: rgba(80, 80, 80, 0.8); -fx-border-radius: 5;");
     
     Label positionLabelText = new Label("Position: ");
-    positionLabelText.setFont(Font.font("Arial", 12));
+    positionLabelText.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 12));
     positionLabelText.setTextFill(Color.LIGHTGRAY);
     
     positionLabel = new Label("Cell " + monster.getPosition());
-    positionLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+    positionLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", FontWeight.BOLD, 14));
     positionLabel.setTextFill(Color.web("#00FF00"));
     
     positionRow.getChildren().addAll(positionLabelText, positionLabel);
@@ -262,14 +290,21 @@ private VBox createStatsSection() {
     
 
 
+// Replace animatePulse() with this:
 private void animatePulse(Label label) {
-     ScaleTransition pulse = new ScaleTransition(Duration.millis(300), label);
-     pulse.setFromX(1.0);
-     pulse.setToX(1.2);
-     pulse.setCycleCount(2);
- pulse.setAutoReverse(true);
-        pulse.play();
-    }
+    TranslateTransition slide = new TranslateTransition(Duration.millis(1200), label);
+    slide.setFromY(-2);
+    slide.setToY(0);
+    slide.setCycleCount(1);
+    
+    FadeTransition fade = new FadeTransition(Duration.millis(1200), label);
+    fade.setFromValue(0.0);
+    fade.setToValue(1.0);
+    fade.setCycleCount(1);
+    
+    ParallelTransition both = new ParallelTransition(slide, fade);
+    both.play();
+}
 
 
 // Update status effects display
@@ -323,7 +358,7 @@ private void animatePulse(Label label) {
         // If no effects, show "None"
         if (!hasEffects) {
             Label noEffects = new Label("None");
-            noEffects.setFont(Font.font("Arial", 11));
+            noEffects.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 11));
             noEffects.setTextFill(Color.GRAY);
             statusEffectsContainer.getChildren().add(noEffects);
         }
@@ -338,6 +373,11 @@ private void animatePulse(Label label) {
         badge.setPadding(new Insets(5, 10, 5, 10));
         badge.setStyle("-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #000000;");
         
+          FadeTransition fadeIn = new FadeTransition(Duration.millis(400), badge);
+    fadeIn.setFromValue(0.0);
+    fadeIn.setToValue(1.0);
+    fadeIn.play();
+    
         // Determine color based on effect type
         Color badgeColor = getBadgeColor(effectName);
         badge.setStyle(badge.getStyle() + " -fx-background-color: " + colorToHex(badgeColor) + ";");
@@ -352,7 +392,7 @@ private void animatePulse(Label label) {
         
         // Effect name + duration label
         Label effectLabel = new Label(effectName + " (" + turnsRemaining + "t)");
-        effectLabel.setFont(Font.font("Arial", 11));
+        effectLabel.setFont(Font.font("file:assets/fonts/PressStart2P.ttf", 11));
         effectLabel.setTextFill(Color.WHITE);
         badge.getChildren().add(effectLabel);
         
