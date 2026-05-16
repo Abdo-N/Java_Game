@@ -8,8 +8,9 @@ import model.game.engine.monsters.Monster;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.DiceDisplay;
 
@@ -63,9 +64,12 @@ public class App extends Application {
     }
 
     public void showMessage(String message){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
-        alert.show();
+        Stage dialog = new Stage();
+        Label label = new Label(message);
+        VBox box = new VBox(label);
+        box.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        dialog.setScene(new Scene(box, 300, 100));
+        dialog.show();
     }
 
     public void onTurnEnd(int turnNumber, String currentPlayer, String opponent){
@@ -78,11 +82,12 @@ public class App extends Application {
     }
 
     public void showWinner(Monster winner){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game Over!");
-        alert.setHeaderText(winner.getName() + " wins!");
-        alert.setContentText("Role: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
-        alert.show();
+        Stage dialog = new Stage();
+        Label label = new Label(winner.getName() + " wins!\nRole: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
+        VBox box = new VBox(label);
+        box.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        dialog.setScene(new Scene(box, 300, 150));
+        dialog.show();
     }
 
     public static void main(String[] args) {
