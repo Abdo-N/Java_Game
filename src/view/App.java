@@ -1,10 +1,10 @@
 package view;
 
-import java.io.IOException;
 
 import model.game.engine.Game;
 import model.game.engine.Role;
 import model.game.engine.monsters.Monster;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +26,8 @@ import model.game.engine.monsters.Dynamo;
 import view.MonsterPanelController;
 
 public class App extends Application {
-	
+	private int previousPlayerEnergy = 0;
+    private int previousOpponentEnergy = 0;
 	private DiceDisplay diceDisplay = new DiceDisplay();
 	private CardPopup cardPopup = new CardPopup();
 	private FreezeNotifier freezeNotifier = new FreezeNotifier();
@@ -103,27 +104,51 @@ public class App extends Application {
     }
 
     public void onTurnEnd(int turnNumber, String currentPlayer, String opponent){
+        int playerDelta = game.getPlayer().getEnergy() - previousPlayerEnergy;
+        int opponentDelta = game.getOpponent().getEnergy() - previousOpponentEnergy;
         turnTracker.updateTracker(turnNumber, currentPlayer, opponent);
         leftPanel.onStatusEffectChanged(game.getPlayer());
         leftPanel.onMonsterMoved(game.getPlayer(), game.getPlayer().getPosition());
         rightPanel.onStatusEffectChanged(game.getOpponent());
         rightPanel.onMonsterMoved(game.getOpponent(), game.getOpponent().getPosition());
-        leftPanel.onEnergyChanged(game.getPlayer(), 0);
-        rightPanel.onEnergyChanged(game.getOpponent(), 0);
+        leftPanel.onEnergyChanged(game.getPlayer(), playerDelta);
+        rightPanel.onEnergyChanged(game.getOpponent(), opponentDelta);
+        previousPlayerEnergy = game.getPlayer().getEnergy();
+        previousOpponentEnergy = game.getOpponent().getEnergy();
     }
 
     public void promptNextTurn(){
         preTurnChoices.promptPreTurnChoices();
     }
 
-    public void showWinner(Monster winner){
-        Stage dialog = new Stage();
-        Label label = new Label(winner.getName() + " wins!\nRole: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
-        VBox box = new VBox(label);
-        box.setStyle("-fx-padding: 20; -fx-alignment: center;");
-        dialog.setScene(new Scene(box, 300, 150));
-        dialog.show();
-    }
+   public void showWinner(Monster winner){
+    Stage dialog = new Stage();
+    Label label = new Label(winner.getName() + " wins!\nRole: " + winner.getRole() + "\nFinal Energy: " + winner.getEnergy());
+    VBox box = new VBox(label);
+    box.setStyle("-fx-padding: 20; -fx-alignment: center;");
+    dialog.setScene(new Scene(box, 300, 150));
+    dialog.show();
+     // Create mock monsters for testing (replace with actual game monsters)
+        Monster monster1 = new Dasher("Monster 1", "Test", Role.SCARER, 100);
+        Monster monster2 = new Dynamo("Monster 2", "Test", Role.LAUGHER, 100);
+
+        // Create panel controllers
+        MonsterPanelController leftPanel = new MonsterPanelController(monster1, "panel_bg1.png");
+        MonsterPanelController rightPanel = new MonsterPanelController(monster2, "panel_bg2.png");
+
+        // Get the actual UI nodes
+        StackPane leftPanelUI = leftPanel.getPanel();
+        StackPane rightPanelUI = rightPanel.getPanel();
+
+        // Create a layout with both panels
+        HBox gameLayout = new HBox();
+        gameLayout.getChildren().addAll(leftPanelUI, rightPanelUI);
+
+        Scene gameScene = new Scene(gameLayout, 1280, 720);
+
+        primaryStage.setScene(gameScene);
+        primaryStage.show();
+}
 
 
     public static void main(String[] args) {

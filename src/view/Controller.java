@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import controller.interfaces.GameEventListener;
+
 import model.game.engine.Board;
 import model.game.engine.Game;
 import model.game.engine.cards.Card;
@@ -14,6 +17,7 @@ public class Controller {
     private Game game;
     private App app;
     private int turnNumber = 1;
+    private ArrayList<GameEventListener> listeners = new ArrayList<>();
 
     public Controller(Game game, App app){
         this.game = game;
@@ -65,6 +69,28 @@ public class Controller {
         } catch (InvalidMoveException e) {
             app.showMessage(e.getMessage());
             app.promptNextTurn();
+        }
+    }
+
+    public void addListener(GameEventListener listener) {
+        listeners.add(listener);
+    }
+
+    private void notifyEnergyChanged(Monster monster, int delta) {
+        for (GameEventListener listener : listeners) {
+            listener.onEnergyChanged(monster, delta);
+        }
+    }
+
+    private void notifyMonsterMoved(Monster monster, int newCell) {
+        for (GameEventListener listener : listeners) {
+            listener.onMonsterMoved(monster, newCell);
+        }
+    }
+
+    private void notifyStatusChanged(Monster monster) {
+        for (GameEventListener listener : listeners) {
+            listener.onStatusEffectChanged(monster);
         }
     }
 }
