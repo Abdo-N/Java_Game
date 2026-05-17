@@ -1,8 +1,8 @@
-*.class
-*.class
 .vscode/
-*.classpath
-.classpath
-.classpath
+.settings/
+.metadata/
 .classpath
 .project
+bin/
+*.class
+.factorypath

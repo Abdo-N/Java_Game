@@ -9,21 +9,12 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import view.DiceDisplay;
-import model.game.engine.Role;
-import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import model.game.engine.monsters.Monster;
 import model.game.engine.monsters.Dasher;
 import model.game.engine.monsters.Dynamo;
-import view.MonsterPanelController;
 
 public class App extends Application {
 	private int previousPlayerEnergy = 0;
@@ -38,6 +29,8 @@ public class App extends Application {
 	private Stage primaryStage;
     private MonsterPanelController leftPanel;
     private MonsterPanelController rightPanel;
+
+
 	@Override
 	public void start(Stage primaryStage) {
 	    this.primaryStage = primaryStage;
@@ -47,6 +40,7 @@ public class App extends Application {
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
 	}
+    
 	private Parent buildGameLayout() {
 	    HBox layout = new HBox(10);
 	    
@@ -72,14 +66,20 @@ public class App extends Application {
 
 	
     public void startGame(Role role) throws IOException {
+        // game = new Game(role);
+        // controller = new Controller(game, this);
+        // preTurnChoices = new PreTurnChoices(controller);
+        // // switch to game screen
+        // Scene gameScene = new Scene(buildGameLayout(), 800, 600);
+        // primaryStage.setScene(gameScene);
+        // turnTracker.updateTracker(1, game.getPlayer().getName(), game.getOpponent().getName());
+        // preTurnChoices.promptPreTurnChoices();
+
         game = new Game(role);
-        controller = new Controller(game, this);
-        preTurnChoices = new PreTurnChoices(controller);
-        // switch to game screen
-        Scene gameScene = new Scene(buildGameLayout(), 800, 600);
+    
+        GameBoard gameBoard = new GameBoard(this, game);
+        Scene gameScene = new Scene(gameBoard, 1200, 800);
         primaryStage.setScene(gameScene);
-        turnTracker.updateTracker(1, game.getPlayer().getName(), game.getOpponent().getName());
-        preTurnChoices.promptPreTurnChoices();
     }
     
     public void showDiceResult(int result){
